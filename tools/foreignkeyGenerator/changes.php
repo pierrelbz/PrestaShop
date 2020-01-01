@@ -86,6 +86,12 @@ $changes = array(
             '#unsigned' => true,
         ),
     ),
+    'redis_servers' => array(
+        'id_redis_server' => array(
+            '#type' => 'INT(11)',
+            '#unsigned' => true,
+        ),
+    ),
     'product_country_tax' => array(
         'id_product' => array(
             '#type' => 'INT(11)',

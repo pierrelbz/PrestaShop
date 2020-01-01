@@ -16,6 +16,7 @@ services:
               'media_servers': 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\MediaServersType'
               'caching': 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\CachingType'
               'add_memcache_server': 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\MemcacheServerType'
+              'add_redis_server': 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\RedisServerType'
             - 'PerformancePage'
 
     prestashop.adapter.maintenance.form_handler:

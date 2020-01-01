@@ -1127,7 +1127,8 @@ $relations = array(
 
     'memcached_servers' => array(
     ),
-
+    'redisservers' => array(
+    ),
     'product_country_tax' => array(
         'id_product' => array(
             'product' => 'id_product',

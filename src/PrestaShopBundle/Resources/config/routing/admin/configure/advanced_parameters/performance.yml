@@ -48,6 +48,32 @@ admin_servers_delete:
         _legacy_link: AdminPerformance:deleteMemcachedServer
     condition: 'request.isXmlHttpRequest()'
 
+admin_servers_redis:
+    path: /redis/servers
+    methods: [GET]
+    defaults:
+        _controller: 'PrestaShopBundle:Admin\Configure\AdvancedParameters\RedisServer:list'
+        _legacy_controller: AdminPerformance
+    condition: 'request.isXmlHttpRequest()'
+
+admin_servers_add_redis:
+    path: /redis/servers
+    methods: [POST]
+    defaults:
+        _controller: 'PrestaShopBundle:Admin\Configure\AdvancedParameters\RedisServer:add'
+        _legacy_controller: AdminPerformance
+        _legacy_link: AdminPerformance:submitAddServer
+    condition: 'request.isXmlHttpRequest()'
+
+admin_servers_delete_redis:
+    path: /redis/servers
+    methods: [DELETE]
+    defaults:
+        _controller: 'PrestaShopBundle:Admin\Configure\AdvancedParameters\RedisServer:delete'
+        _legacy_controller: AdminPerformance
+        _legacy_link: AdminPerformance:deleteMemcachedServer
+    condition: 'request.isXmlHttpRequest()'
+
 admin_servers_test:
     path: /memcache/servers/test
     methods: [GET]
@@ -56,3 +82,12 @@ admin_servers_test:
         _legacy_controller: AdminPerformance
         _legacy_link: AdminPerformance:test_server
     condition: 'request.isXmlHttpRequest()'
+
+admin_servers_test_redis:
+  path: /redis/servers/test
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShopBundle:Admin\Configure\AdvancedParameters\RedisServer:test'
+    _legacy_controller: AdminPerformance
+    _legacy_link: AdminPerformance:test_server
+  condition: 'request.isXmlHttpRequest()'

@@ -313,6 +313,11 @@ services:
         tags:
             - { name: form.type }
 
+    form.type.performance.redis_servers:
+      class: 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\RedisServerType'
+      tags:
+        - { name: form.type }
+
     form.type.performance.caching:
         class: 'PrestaShopBundle\Form\Admin\AdvancedParameters\Performance\CachingType'
         parent: 'form.type.translatable.aware'

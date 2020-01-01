@@ -74,6 +74,7 @@ class PerformanceController extends FrameworkBundleAdminController
             'requireFilterStatus' => false,
             'form' => $form->createView(),
             'servers' => $this->get('prestashop.adapter.memcache_server.manager')->getServers(),
+            'serversRedis' => $this->get('prestashop.adapter.redis_server.manager')->getServers(),
         ];
     }
 

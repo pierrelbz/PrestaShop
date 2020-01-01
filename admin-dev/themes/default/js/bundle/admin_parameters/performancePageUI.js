@@ -43,9 +43,13 @@ var PerformancePageUI = {
         var CACHE_ENABLED = '1';
         var cacheEnabledInput = document.querySelector('input[name="form[caching][use_cache]"]:checked');
         var cachingElements = document.getElementsByClassName('memcache');
+        var cachingElementsRedis = document.getElementsByClassName('redis');
 
         if(cacheEnabledInput.value === CACHE_ENABLED) {
             for (var i = 0; i < cachingElements.length; i++) {
+                cachingElements[i].style.display = "block";
+            }
+            for (var i = 0; i < cachingElementsRedis.length; i++) {
                 cachingElements[i].style.display = "block";
             }
             return;
@@ -54,25 +58,45 @@ var PerformancePageUI = {
         for (var i = 0; i < cachingElements.length; i++) {
             cachingElements[i].style.display = "none";
         }
+      for (var i = 0; i < cachingElementsRedis.length; i++) {
+        cachingElementsRedis[i].style.display = "none";
+      }
     },
-    displayMemcacheServers: function() {
+    displayCacheServers: function() {
         var CACHE_ENABLED = '1';
         var cacheEnabledInput = document.querySelector('input[name="form[caching][use_cache]"]:checked');
         var cacheSelected = document.querySelector('input[name="form[caching][caching_system]"]:checked');
         var memcacheServersListBlock = document.getElementById('servers-list');
+        var redisServersListBlock = document.getElementById('servers-list-redis');
         var newServerBtn = document.getElementById('new-server-btn');
+        var newServerBtnRedis = document.getElementById('new-server-btn-redis');
         var isMemcache = cacheSelected && (cacheSelected.value === "CacheMemcache" || cacheSelected.value === "CacheMemcached");
+        var isRedis = cacheSelected && (cacheSelected.value === "CacheRedis" || cacheSelected.value === "CacheRedis");
 
         if (isMemcache && cacheEnabledInput.value === CACHE_ENABLED) {
             memcacheServersListBlock.style.display = "block";
+            redisServersListBlock.style.display = "none";
             newServerBtn.style.display = "block";
+            newServerBtnRedis.style.display = "none";
 
-            return;
+
+          return;
         }
-
+        console.log(isMemcache);  console.log(isRedis);
+      if (isRedis && cacheEnabledInput.value === CACHE_ENABLED) {
+        redisServersListBlock.style.display = "block";
         memcacheServersListBlock.style.display = "none";
         newServerBtn.style.display = "none";
-    }
+        newServerBtnRedis.style.display = "block";
+
+        return;
+      }
+        memcacheServersListBlock.style.display = "none";
+        redisServersListBlock.style.display = "none";
+        newServerBtn.style.display = "none";
+        newServerBtnRedis.style.display = "none";
+
+    },
 };
 
 /**
@@ -81,8 +105,8 @@ var PerformancePageUI = {
 window.addEventListener('load', function() {
     PerformancePageUI.displaySmartyCache();
     PerformancePageUI.displayCacheSystems();
-    PerformancePageUI.displayMemcacheServers();
-});
+    PerformancePageUI.displayCacheServers();
+ });
 
 var cacheSystemInputs = document.querySelectorAll('input[type=radio]');
 var length = cacheSystemInputs.length;
@@ -97,7 +121,7 @@ while(length--) {
             return PerformancePageUI.displaySmartyCache();
         }
         if ('form[caching][caching_system]' === name) {
-            return PerformancePageUI.displayMemcacheServers();
+            return PerformancePageUI.displayCacheServers();
         }
     });
 }

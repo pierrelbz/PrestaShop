@@ -47,6 +47,10 @@ services:
         class: 'PrestaShop\PrestaShop\Adapter\Cache\MemcacheServerManager'
         arguments: ['@database_connection', '%database_prefix%']
 
+    prestashop.adapter.redis_server.manager:
+        class: 'PrestaShop\PrestaShop\Adapter\Cache\RedisServerManager'
+        arguments: ['@database_connection', '%database_prefix%']
+
     prestashop.adapter.php_parameters:
         class: 'PrestaShop\PrestaShop\Adapter\Configuration\PhpParameters'
         arguments: ['%kernel.root_dir%/config/parameters.php']

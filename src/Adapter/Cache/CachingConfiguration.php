@@ -39,6 +39,10 @@ class CachingConfiguration implements DataConfigurationInterface
      * @var MemcacheServerManager
      */
     private $memcacheServerManager;
+    /**
+     * @var RedisServerManager
+     */
+    private $redisServerManager;
 
     /**
      * @var PhpParameters
@@ -62,6 +66,7 @@ class CachingConfiguration implements DataConfigurationInterface
 
     /**
      * @param MemcacheServerManager $memcacheServerManager
+     * @param RedisServerManager $redisServerManager
      * @param PhpParameters $phpParameters
      * @param CacheClearerInterface $symfonyCacheClearer
      * @param $isCachingEnabled
@@ -69,12 +74,14 @@ class CachingConfiguration implements DataConfigurationInterface
      */
     public function __construct(
         MemcacheServerManager $memcacheServerManager,
+        RedisServerManager $redisServerManager,
         PhpParameters $phpParameters,
         CacheClearerInterface $symfonyCacheClearer,
         $isCachingEnabled,
         $cachingSystem
     ) {
         $this->memcacheServerManager = $memcacheServerManager;
+        $this->redisServerManager = $redisServerManager;
         $this->phpParameters = $phpParameters;
         $this->symfonyCacheClearer = $symfonyCacheClearer;
         $this->isCachingEnabled = $isCachingEnabled;
@@ -90,6 +97,7 @@ class CachingConfiguration implements DataConfigurationInterface
             'use_cache' => $this->isCachingEnabled,
             'caching_system' => $this->cachingSystem,
             'servers' => $this->memcacheServerManager->getServers(),
+            'serversRedis' => $this->redisServerManager->getServers(),
         );
     }
 
@@ -115,7 +123,8 @@ class CachingConfiguration implements DataConfigurationInterface
         return isset(
             $configuration['use_cache'],
             $configuration['caching_system'],
-            $configuration['servers']
+            $configuration['servers'],
+            $configuration['serversRedis']
         );
     }
 

@@ -27,10 +27,9 @@
 {% import '@PrestaShop/Admin/macros.html.twig' as ps %}
 
 {%
-    set smartyForm, debugModeForm, optionalFeaturesForm, combineCompressCacheForm, mediaServersForm, cachingForm, memcacheForm =
-    form.smarty, form.debug_mode, form.optional_features, form.ccc, form.media_servers, form.caching, form.add_memcache_server
+    set smartyForm, debugModeForm, optionalFeaturesForm, combineCompressCacheForm, mediaServersForm, cachingForm, memcacheForm, redisForm =
+    form.smarty, form.debug_mode, form.optional_features, form.ccc, form.media_servers, form.caching, form.add_memcache_server, form.add_redis_server
 %}
-
 {% block content %}
   {{ form_start(form, {'attr' : {'class': 'form'} }) }}
   <div class="row justify-content-center">
@@ -294,7 +293,7 @@
                   {{ form_widget(cachingForm.use_cache) }}
                 </div>
               </div>
-              <div class="form-group row memcache" id="caching_systems">
+              <div class="form-group row memcache redis" id="caching_systems">
                 <label class="form-control-label">{{ 'Caching system'|trans }}</label>
                 <div class="col-sm">
                   {{ form_errors(cachingForm.caching_system) }}
@@ -303,6 +302,7 @@
               </div>
               {{ form_rest(cachingForm) }}
               {{ include('@AdvancedParameters/memcache_servers.html.twig', {'form': memcacheForm}) }}
+              {{ include('@AdvancedParameters/redis_servers.html.twig', {'form': redisForm}) }}
             </div>
           </div>
           <div class="card-footer">
@@ -347,6 +347,32 @@
       });
     });
   </script>
+  <script>
+    var configurationRedis = {
+      'addServerUrl': '{{ url('admin_servers_add_redis')|e('js') }}',
+      'removeServerUrl': '{{ url('admin_servers_delete_redis')|e('js') }}',
+      'testServerUrl': '{{ url('admin_servers_test_redis')|e('js') }}'
+    };
+    var appRedis = new PerformancePageRedis(
+      configurationRedis.addServerUrl,
+      configurationRedis.removeServerUrl,
+      configurationRedis.testServerUrl
+    );
 
+    window.addEventListener('load', function() {
+      var addServerBtnRedis = document.getElementById('add-server-btn-redis');
+      var testServerBtnRedis = document.getElementById('test-server-btn-redis');
+
+      addServerBtnRedis.addEventListener('click', function(event) {
+        event.preventDefault();
+        appRedis.addServerRedis();
+      });
+
+      testServerBtnRedis.addEventListener('click', function(event) {
+        event.preventDefault();
+        appRedis.testServerRedis();
+      });
+    });
+  </script>
   <script src="{{ asset('themes/default/js/bundle/admin_parameters/performancePageUI.js') }}"></script>
 {% endblock %}

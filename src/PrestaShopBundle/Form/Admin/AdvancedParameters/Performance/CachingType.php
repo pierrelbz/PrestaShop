@@ -42,6 +42,7 @@ class CachingType extends TranslatorAwareType
         'CacheMemcached' => ['memcached'],
         'CacheApc' => ['apc', 'apcu'],
         'CacheXcache' => ['xcache'],
+        'CacheRedis' => ['Redis'],
     ];
 
     /**
@@ -57,6 +58,7 @@ class CachingType extends TranslatorAwareType
                     'Memcached via PHP::Memcached' => 'CacheMemcached',
                     'APC' => 'CacheApc',
                     'Xcache' => 'CacheXcache',
+                    'Redis' => 'CacheRedis',
                 ],
                 'choice_label' => function ($value, $key, $index) {
                     $disabled = false;
@@ -153,6 +155,16 @@ class CachingType extends TranslatorAwareType
                     'Admin.Advparameters.Notification',
                     [
                         '[a]' => '<a href="http://xcache.lighttpd.net" target="_blank">',
+                        '[/a]' => '</a>',
+                    ]
+                ),
+            'CacheRedis' => $this->trans('Redis', 'Admin.Advparameters.Feature')
+                . ' '
+                . $this->trans(
+                    '(you must install the [a]Redis extension[/a])',
+                    'Admin.Advparameters.Notification',
+                    [
+                        '[a]' => '<a href="http://bla" target="_blank">',
                         '[/a]' => '</a>',
                     ]
                 ),

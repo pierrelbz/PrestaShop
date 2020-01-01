@@ -117,3 +117,102 @@ function PerformancePage(addServerUrl, removeServerUrl, testServerUrl) {
         }).done(callback);
     };
 }
+
+function PerformancePageRedis(addServerUrl, removeServerUrl, testServerUrl) {
+  this.addServerUrl = addServerUrl;
+  this.removeServerUrl = removeServerUrl;
+  this.testServerUrl = testServerUrl;
+
+  this.getAddServerUrl = function() {
+    return this.addServerUrl;
+  };
+
+  this.getRemoveServerlUrlRedis = function() {
+    return this.removeServerUrl;
+  };
+  this.getTestServerUrl = function() {
+    return this.testServerUrl;
+  };
+
+  this.getFormValues = function() {
+    var serverIpInput = document.getElementById('form_add_redis_server_redis_ip');
+    var serverPortInput = document.getElementById('form_add_redis_server_redis_port');
+    var serverWeightInput = document.getElementById('form_add_redis_server_redis_weight');
+    var serverBaseInput = document.getElementById('form_add_redis_server_redis_base');
+
+    return {
+      'server_ip': serverIpInput.value,
+      'server_port': serverPortInput.value,
+      'server_weight': serverWeightInput.value,
+      'server_base': serverBaseInput.value,
+    };
+  };
+
+  this.createRow = function(params) {
+    var serversTable = document.getElementById('servers-table-redis');
+    var newRow = document.createElement('tr');
+    newRow.setAttribute('id', 'row_'+ params.id);
+    newRow.innerHTML =
+      '<td>'+ params.id +'</td>\n' +
+      '<td>'+ params.server_ip +'</td>\n' +
+      '<td>'+ params.server_port +'</td>\n' +
+      '<td>'+ params.server_weight +'</td>\n' +
+      '<td>'+ params.server_base +'</td>\n' +
+      '<td>\n' +
+      '    <a class="btn btn-default" href="#" onclick="appRedis.removeServerRedis('+ params.id +');"><i class="material-icons">remove_circle</i> Remove</a>\n' +
+      '</td>\n';
+    serversTable.appendChild(newRow);
+  };
+
+  this.addServerRedis = function() {
+    var appRedis = this;
+    this.send(this.getAddServerUrl(), 'POST', this.getFormValues(), function(results) {
+      if (!results.hasOwnProperty('error')) {
+        appRedis.createRow(results);
+      }
+    });
+  };
+
+  this.removeServerRedis = function(serverId, removeMsg) {
+    var removeOk = confirm(removeMsg);
+
+    if (removeOk) {
+      this.send(this.getRemoveServerlUrlRedis(), 'DELETE', {'server_id': serverId}, function(results) {
+        if (results === undefined) {
+          var row = document.getElementById('row_'+serverId);
+          row.parentNode.removeChild(row);
+        }
+      });
+    }
+
+  };
+
+  this.testServerRedis = function() {
+    var appRedis = this;
+
+    this.send(this.getTestServerUrl(), 'GET', this.getFormValues(), function(results) {
+      if (results.hasOwnProperty('error') || results.test === false) {
+        appRedis.addClass('is-invalid');
+        return;
+      }
+
+      appRedis.addClass('is-valid');
+    });
+  };
+
+  this.addClass = function(className) {
+    var serverFormInputs = document.querySelectorAll('#server-form-redis input[type=text]');
+    for (var i = 0; i < serverFormInputs.length; i++) {
+      serverFormInputs[i].className = 'form-control '+ className;
+    }
+  }
+
+  /* global $ */
+  this.send = function(url, method, params, callback) {
+    return $.ajax({
+      url: url,
+      method: method,
+      data: params
+    }).done(callback);
+  };
+}
